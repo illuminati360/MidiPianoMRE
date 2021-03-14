@@ -15,12 +15,14 @@ var Client = Client || {};
 	var eventFunctions = {};
 	var prePackets = [];
 	var status = Status[0];
-	
+
 	function connect(config, callback)
 	{	
 		if (status === 'OPEN') { return; } // We only want to use one instance of WebSocket
 		
 		var config = config || {};
+		var callback = callback || undefined;
+
 		var host = config.host || 'localhost';
 		var port = config.port;
 		var protocol = 'wss://';
@@ -64,7 +66,7 @@ var Client = Client || {};
 			var data = packet.data;
 			
 			eventFunctions[event](data);
-		};	
+		};
 	}
 	
 	function sendPacket(packet)

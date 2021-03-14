@@ -38,9 +38,9 @@ const BLACK_KEY_DIMENSIONS = {
 *      Black keys will have an offset starting position of the 
 *      previous white key plus half the width of the white key.
 *
-*            (1) (2) (3)     (5) (6)
-*             B   B   B       B   B
-*       W   W   W   W   W   W   W   
+*        (0)     (2) (3)     (5) (6)
+*         B       B   B       B   B
+*       W   W   W   W   W   W   W
 *      (0) (1) (2) (3) (4) (5) (6)
 *
 *       [0, (n)] = White key
@@ -48,8 +48,8 @@ const BLACK_KEY_DIMENSIONS = {
 */
 
 const OCTAVE_LAYOUT = [
-//  WHITE   WHITE   BLACK   WHITE   BLACK   WHITE   BLACK   WHITE    WHITE  BLACK   WHITE   BLACK
-    [0, 0], [0, 1], [1, 1], [0, 2], [1, 2], [0, 3], [1, 3], [0, 4], [0, 5], [1, 5], [0, 6], [1, 6]
+//  WHITE   BLACK   WHITE   WHITE   BLACK   WHITE   BLACK   WHITE   WHITE   BLACK   WHITE   BLACK   
+    [0, 0], [1, 0], [0, 1], [0, 2], [1, 2], [0, 3], [1, 3], [0, 4], [0, 5], [1, 5], [0, 6], [1, 6], 
 ];
 
 // How far the keys will rotate down
