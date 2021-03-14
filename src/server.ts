@@ -16,7 +16,7 @@ const server = new WebHost({
    baseDir: resolvePath(__dirname, '../public')
 });
 
-const midiServer = new MidiServer();
+const midiServer = new MidiServer(8888);
 
 // Handle new application sessions
 server.adapter.onConnection(context => new Piano(context, midiServer, server.baseUrl ));

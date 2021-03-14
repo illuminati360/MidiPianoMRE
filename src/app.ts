@@ -1,4 +1,5 @@
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
+import { Actor, Color3, Color4 } from '@microsoft/mixed-reality-extension-sdk';
 import MidiPlayer from 'midi-player-ts';
 import * as MidiServer from './midi-server';
 
@@ -74,6 +75,8 @@ export default class Piano
     private assets: MRE.AssetContainer;
 
     private piano: MRE.Actor;
+
+    private cube: MRE.Actor;
 	
     //private note: { [key: string]: MRE.Sound };
     private keySounds: MRE.Sound[] = [];
@@ -98,8 +101,9 @@ export default class Piano
         this.loadSounds();
         await this.createPiano();
 		this.createKeys();
+        this.createCube();
         this.handleMidiServer();
-        //this.handleMidiPlayer();
+        // this.handleMidiPlayer();
     }
 
     private loadSounds()
@@ -221,10 +225,24 @@ export default class Piano
         keyBehavior.onButton('pressed', () =>
         {
             this.noteOn(key, 127);
+            this.cube.appearance.material.color = Color4.FromColor3(new Color3(key/127/3, key/127, key/127/6), 1);
 
             setTimeout(() => {
                 this.noteOff(key);
               }, 500);
+        });
+    }
+
+    private createCube(){
+        const CUBE_DIMENSIONS = {width: 1, height: 1, depth: 1};
+
+        this.cube = Actor.Create(this.context, {
+            actor: {
+                appearance: {
+                    meshId: this.assets.createBoxMesh('cube', CUBE_DIMENSIONS.width, CUBE_DIMENSIONS.height, CUBE_DIMENSIONS.depth).id,
+                    materialId: this.assets.createMaterial('default', { color: Color3.White() }).id
+                }
+            }
         });
     }
 
@@ -249,7 +267,8 @@ export default class Piano
 
     private handleMidiPlayer()
     {
-        this.MidiPlayer = new MidiPlayer.Player().loadFile(`${this.baseUrl}/hes_a_pirate.mid`);
+        // this.MidiPlayer = new MidiPlayer.Player().loadFile(`${this.baseUrl}/hes_a_pirate.mid`);
+        this.MidiPlayer = new MidiPlayer.Player();
 
         this.MidiPlayer.on('midiEvent', (event: any) =>
         { 
@@ -266,6 +285,7 @@ export default class Piano
     
     private noteOn(keyIndex: number, velocity: number)
     {
+        this.cube.appearance.material.color = Color4.FromColor3(new Color3(keyIndex, keyIndex, keyIndex), 1);
         const instance = this.piano.startSound(this.keySounds[keyIndex].id,
         {
             doppler: 0.0, 
